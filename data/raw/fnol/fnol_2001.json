@@ -1,0 +1,9 @@
+{
+  "claim_id": "CLM-2001",
+  "policy_id": "POL-1001",
+  "loss_date": "2026-03-10",
+  "loss_type": "water_damage",
+  "reported_by": "insured",
+  "description": "Insured reported a sudden pipe burst in the upstairs bathroom causing water damage to the kitchen ceiling and hardwood flooring below.",
+  "state": "TX"
+}
