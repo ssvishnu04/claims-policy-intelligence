@@ -9,6 +9,8 @@ from langchain_groq import ChatGroq
 from langchain_core.prompts import ChatPromptTemplate
 from langchain_core.output_parsers import StrOutputParser
 
+from app.claim_lookup import get_claim_profile, format_claim_profile_for_prompt
+
 from app.config import (
     RAW_DATA_DIR,
     FAISS_INDEX_DIR,
@@ -140,10 +142,6 @@ def filter_docs_by_policy_claim(
     policy_id: str,
     claim_id: str,
 ) -> List[Document]:
-    """
-    Keeps only chunks related to the selected policy or claim.
-    This improves retrieval precision and avoids mixing unrelated claims/policies.
-    """
     filtered_docs = []
 
     policy_id_lower = policy_id.lower().strip()
@@ -196,6 +194,9 @@ def ask_claims_assistant(
     k: int = 10,
 ) -> Dict[str, Any]:
 
+    claim_profile = get_claim_profile(policy_id, claim_id)
+    claim_profile_context = format_claim_profile_for_prompt(claim_profile)
+
     vectorstore = load_faiss_index()
 
     scoped_query = f"""
@@ -212,27 +213,14 @@ Question: {question}
         claim_id=claim_id,
     )
 
-    # If strict filtering removes everything, return a safe response.
-    if not filtered_docs:
-        return {
-            "answer": (
-                "Decision Summary:\n"
-                "I could not find enough matching context for the provided Policy ID and Claim ID.\n\n"
-                "Coverage Details:\n"
-                "Not enough information available.\n\n"
-                "Exclusions / Limitations:\n"
-                "Not enough information available.\n\n"
-                "Claim or Prior Loss Context:\n"
-                "No matching claim or policy context was found.\n\n"
-                "Recommended Next Steps:\n"
-                "Verify that the Policy ID and Claim ID are correct and rebuild the FAISS index if new documents were added.\n\n"
-                "Sources Used:\n"
-                "No matching sources found."
-            ),
-            "sources": [],
-        }
+    rag_context = format_context(filtered_docs) if filtered_docs else "No matching retrieved document context found."
 
-    context = format_context(filtered_docs)
+    context = f"""
+{claim_profile_context}
+
+RETRIEVED DOCUMENT CONTEXT
+{rag_context}
+"""
 
     prompt = ChatPromptTemplate.from_messages(
         [
@@ -242,17 +230,25 @@ Question: {question}
 You are an AI Claims & Policy Assistant for a Property & Casualty insurance company.
 
 Rules:
-1. Answer only using the retrieved context.
+1. Answer only using the provided context.
 2. Only answer for the provided Policy ID and Claim ID.
-3. Do not use unrelated policies, claims, or documents.
-4. Do not make up policy terms, exclusions, deductibles, or claim facts.
-5. If the context does not support the answer, clearly say more information is needed.
-6. Explain the answer in simple insurance business language.
-7. Mention relevant source files when useful.
+3. You MUST always use STRUCTURED CLAIM PROFILE for claim facts such as:
+   - loss date
+   - claim status
+   - paid amount
+   - loss type
+   - repair estimates
+4. Do NOT rely on retrieved documents for structured claim fields if the STRUCTURED CLAIM PROFILE contains those fields.
+5. Use RETRIEVED DOCUMENT CONTEXT for policy language, exclusions, adjuster notes, underwriting guidance, and supporting documents.
+6. Do not use unrelated policies, claims, or documents.
+7. Do not make up policy terms, exclusions, deductibles, dates, amounts, or claim facts.
+8. If the context does not support the answer, clearly say more information is needed.
+9. If the user asks for complete claim details, present claim details in a clean markdown table.
 
 Return your answer in this format:
 
 Decision Summary:
+Claim Details:
 Coverage Details:
 Exclusions / Limitations:
 Claim or Prior Loss Context:
@@ -272,7 +268,7 @@ Claim ID:
 Question:
 {question}
 
-Retrieved Context:
+Context:
 {context}
 """,
             ),
@@ -293,6 +289,7 @@ Retrieved Context:
     return {
         "answer": answer,
         "sources": filtered_docs,
+        "claim_profile": claim_profile,
     }
 
 
@@ -317,11 +314,14 @@ if __name__ == "__main__":
     result = ask_claims_assistant(
         policy_id="POL-1001",
         claim_id="CLM-2001",
-        question="Is this sudden pipe burst water damage covered and what exclusions apply?",
+        question="Give me complete details of this claim in a table structure.",
     )
 
     print("\nANSWER:")
     print(result["answer"])
+
+    print("\nCLAIM PROFILE:")
+    print(result["claim_profile"])
 
     print("\nSOURCES:")
     for source in result["sources"]:

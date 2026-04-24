@@ -1,5 +1,6 @@
 import sys
 from pathlib import Path
+import pandas as pd
 import streamlit as st
 
 ROOT_DIR = Path(__file__).resolve().parents[1]
@@ -40,13 +41,13 @@ with st.sidebar:
     - Is this claim covered?
     - What exclusions apply?
     - What deductible should be reviewed?
-    - What supporting documents are relevant?
+    - Give me complete details of this claim in a table
     - What should the adjuster verify next?
     """)
 
 question = st.text_area(
     "Ask a claims or policy question",
-    placeholder="Example: Is this sudden pipe burst water damage covered and what exclusions apply?",
+    placeholder="Example: Give me complete details of claim CLM-2001 in a table structure.",
     height=120
 )
 
@@ -57,7 +58,7 @@ if st.button("Analyze Claim", type="primary"):
         try:
             from app.rag_pipeline import ask_claims_assistant
 
-            with st.spinner("Retrieving relevant insurance documents and generating answer..."):
+            with st.spinner("Retrieving structured claim data and policy context..."):
                 result = ask_claims_assistant(
                     question=question,
                     policy_id=policy_id,
@@ -66,6 +67,33 @@ if st.button("Analyze Claim", type="primary"):
 
             st.subheader("AI Answer")
             st.write(result["answer"])
+
+            if "claim_profile" in result:
+                profile = result["claim_profile"]
+
+                st.subheader("Structured Claim Profile")
+
+                claim_summary = {
+                    "Policy ID": profile.get("policy_id"),
+                    "Claim ID": profile.get("claim_id"),
+                    "Loss Date": profile.get("claims_history", {}).get("loss_date"),
+                    "Loss Type": profile.get("claims_history", {}).get("loss_type"),
+                    "Claim Status": profile.get("claims_history", {}).get("claim_status"),
+                    "Paid Amount": profile.get("claims_history", {}).get("paid_amount"),
+                    "Repair Estimate Total": profile.get("repair_estimate_total"),
+                }
+
+                st.table(pd.DataFrame([claim_summary]))
+
+                fnol = profile.get("fnol", {})
+                if fnol:
+                    with st.expander("FNOL Details"):
+                        st.json(fnol)
+
+                repair_estimates = profile.get("repair_estimates", [])
+                if repair_estimates:
+                    st.write("**Repair Estimates**")
+                    st.dataframe(pd.DataFrame(repair_estimates), use_container_width=True)
 
             st.subheader("Retrieved Sources")
 
