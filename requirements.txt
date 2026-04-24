@@ -13,3 +13,4 @@ tiktoken
 langchain-groq
 langchain-huggingface
 sentence-transformers
+tabulate

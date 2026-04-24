@@ -1,0 +1,4 @@
+claim_id,policy_id,loss_date,loss_type,claim_status,paid_amount,state
+CLM-1801,POL-1001,2024-08-15,roof_wind_damage,closed,4200,TX
+CLM-1907,POL-1001,2025-01-22,minor_water_damage,closed,1850,TX
+CLM-2001,POL-1001,2026-03-10,water_damage,open,0,TX
