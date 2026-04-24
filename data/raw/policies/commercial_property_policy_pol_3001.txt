@@ -1,15 +1,16 @@
 Policy ID: POL-3001
-Product: Commercial Property
+Product: Commercial Property Policy
 State: Texas
+
+COVERAGE TYPE: Commercial Property Damage
+DEDUCTIBLE: $5,000
+COVERAGE LIMIT: $500,000
 
 PROPERTY COVERAGE
 We cover direct physical loss to covered commercial property caused by covered causes of loss.
 
 WIND AND HAIL
-Wind and hail damage may be covered subject to deductible and policy conditions.
+Wind and hail damage may be covered subject to deductible, roof condition, and policy terms.
 
 EXCLUSIONS
-We do not cover flood, earth movement, wear and tear, or poor maintenance.
-
-DEDUCTIBLE
-A deductible of $5,000 applies to covered commercial property losses.
+We do not cover flood, earth movement, wear and tear, deterioration, or poor maintenance.

@@ -1,8 +1,12 @@
 {
   "claim_id": "CLM-3002",
   "policy_id": "POL-2001",
+  "customer_id": "CUST-6002",
+  "loss_date": "2024-05-09",
+  "reported_date": "2024-05-10",
   "loss_type": "hail_damage_auto",
-  "description": "Vehicle sustained hail dents during storm.",
-  "status": "open",
+  "claim_status": "closed",
+  "paid_amount": 2100,
+  "description": "Vehicle sustained hail dents during a severe storm.",
   "state": "TX"
 }

@@ -1,8 +1,11 @@
 Claim ID: CLM-4003
 Policy ID: POL-3001
+Loss Date: 2024-02-05
 Loss Type: fire_damage
+Claim Status: closed
 
 Adjuster Note:
 Small electrical fire damaged office storage area.
 
-Initial review indicates the claim should be compared against policy coverage, exclusions, deductible, and loss conditions.
+Initial Review:
+The adjuster should compare the cause of loss against policy coverage, exclusions, deductible, claim history, and supporting documents.

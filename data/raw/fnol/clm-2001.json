@@ -1,8 +1,12 @@
 {
   "claim_id": "CLM-2001",
   "policy_id": "POL-1001",
+  "customer_id": "CUST-5001",
+  "loss_date": "2024-03-10",
+  "reported_date": "2024-03-11",
   "loss_type": "water_damage",
-  "description": "Sudden pipe burst in upstairs bathroom caused water damage to kitchen ceiling.",
-  "status": "open",
+  "claim_status": "open",
+  "paid_amount": 0,
+  "description": "Sudden pipe burst in upstairs bathroom caused water damage to kitchen ceiling and flooring.",
   "state": "TX"
 }

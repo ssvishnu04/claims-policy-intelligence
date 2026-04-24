@@ -1,0 +1,16 @@
+Policy ID: POL-4001
+Product: Business Owners Policy
+State: Texas
+
+COVERAGE TYPE: Business Property and Liability
+PROPERTY DEDUCTIBLE: $2,500
+LIABILITY LIMIT: $1,000,000
+
+BUSINESS PROPERTY
+We cover direct physical loss to business personal property caused by a covered loss.
+
+BUSINESS INTERRUPTION
+We may cover loss of business income when operations are suspended due to a covered direct physical loss.
+
+EXCLUSIONS
+We do not cover flood, virus-related shutdowns, intentional acts, or normal wear and tear.

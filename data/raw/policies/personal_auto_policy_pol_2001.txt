@@ -1,0 +1,17 @@
+Policy ID: POL-2001
+Product: Personal Auto Policy
+State: Texas
+
+COVERAGE TYPE: Collision and Comprehensive Auto Coverage
+COLLISION DEDUCTIBLE: $500
+COMPREHENSIVE DEDUCTIBLE: $250
+COVERAGE LIMIT: Actual Cash Value of Covered Auto
+
+COLLISION COVERAGE
+We cover direct and accidental loss to your covered auto caused by collision.
+
+COMPREHENSIVE COVERAGE
+We cover theft, fire, vandalism, hail, falling objects, animal impact, and glass breakage.
+
+EXCLUSIONS
+We do not cover mechanical breakdown, wear and tear, intentional damage, racing, or use of the vehicle for illegal activity.

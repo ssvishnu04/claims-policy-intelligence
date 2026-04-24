@@ -1,9 +1,13 @@
-claim_id,item,estimated_cost
-CLM-2001,Ceiling drywall repair,1800
-CLM-2001,Flooring repair,3200
-CLM-2002,Water extraction,4500
-CLM-3001,Rear bumper repair,1600
-CLM-3002,Paintless dent repair,2100
-CLM-4001,Commercial roof repair,18500
-CLM-4002,Warehouse cleanup,12000
-CLM-4003,Electrical repair,8500
+claim_id,item,estimated_cost,notes
+CLM-2001,Water extraction,2500,Emergency water cleanup
+CLM-2001,Ceiling drywall repair,1800,Kitchen ceiling damage
+CLM-2001,Flooring repair,3200,Hardwood flooring water exposure
+CLM-2002,Flood cleanup,4500,Surface water cleanup
+CLM-3001,Rear bumper repair,1600,Collision repair
+CLM-3001,Paint refinish,900,Rear panel paint
+CLM-3002,Paintless dent repair,2100,Hail damage repair
+CLM-4001,Commercial roof repair,18500,Hail damage to roof membrane
+CLM-4002,Warehouse cleanup,12000,Flood cleanup
+CLM-4003,Electrical repair,8500,Fire-related electrical work
+CLM-5001,Equipment replacement,9500,Stolen business equipment
+CLM-5002,Business income review,6200,Three-day interruption estimate

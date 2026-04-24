@@ -1,8 +1,12 @@
 {
   "claim_id": "CLM-2003",
   "policy_id": "POL-1001",
+  "customer_id": "CUST-5002",
+  "loss_date": "2024-06-18",
+  "reported_date": "2024-06-19",
   "loss_type": "roof_wind_damage",
+  "claim_status": "closed",
+  "paid_amount": 4200,
   "description": "Windstorm damaged roof shingles on residential property.",
-  "status": "closed",
   "state": "TX"
 }

@@ -1,0 +1,12 @@
+{
+  "claim_id": "CLM-5001",
+  "policy_id": "POL-4001",
+  "customer_id": "CUST-8001",
+  "loss_date": "2024-08-12",
+  "reported_date": "2024-08-13",
+  "loss_type": "business_property_theft",
+  "claim_status": "open",
+  "paid_amount": 0,
+  "description": "Retail store reported theft of business equipment after overnight break-in.",
+  "state": "TX"
+}

@@ -1,8 +1,11 @@
 Claim ID: CLM-2002
 Policy ID: POL-1001
+Loss Date: 2024-04-02
 Loss Type: flood_damage
+Claim Status: closed
 
 Adjuster Note:
 Heavy rain caused surface water to enter the home through the front door.
 
-Initial review indicates the claim should be compared against policy coverage, exclusions, deductible, and loss conditions.
+Initial Review:
+The adjuster should compare the cause of loss against policy coverage, exclusions, deductible, claim history, and supporting documents.

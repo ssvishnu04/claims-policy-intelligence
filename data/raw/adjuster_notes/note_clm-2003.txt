@@ -1,8 +1,11 @@
 Claim ID: CLM-2003
 Policy ID: POL-1001
+Loss Date: 2024-06-18
 Loss Type: roof_wind_damage
+Claim Status: closed
 
 Adjuster Note:
 Windstorm damaged roof shingles on residential property.
 
-Initial review indicates the claim should be compared against policy coverage, exclusions, deductible, and loss conditions.
+Initial Review:
+The adjuster should compare the cause of loss against policy coverage, exclusions, deductible, claim history, and supporting documents.

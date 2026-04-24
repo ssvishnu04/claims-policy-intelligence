@@ -24,10 +24,6 @@ TEST_FILE = Path("evaluation/test_questions.json")
 
 
 def filter_sources_by_policy_claim(sources, policy_id: str, claim_id: str):
-    """
-    Improves context precision by keeping only chunks that are related
-    to the selected policy or claim.
-    """
     filtered = []
 
     for doc in sources:
@@ -37,11 +33,9 @@ def filter_sources_by_policy_claim(sources, policy_id: str, claim_id: str):
         policy_match = policy_id.lower() in content or policy_id.lower() in metadata_text
         claim_match = claim_id.lower() in content or claim_id.lower() in metadata_text
 
-        # Keep documents that match either the exact policy or exact claim
         if policy_match or claim_match:
             filtered.append(doc)
 
-    # Fallback: if filtering removes everything, keep original sources
     return filtered if filtered else sources
 
 
@@ -60,7 +54,7 @@ def build_ragas_dataset():
             policy_id=policy_id,
             claim_id=claim_id,
             question=question,
-            k=8,
+            k=15,
         )
 
         filtered_sources = filter_sources_by_policy_claim(
@@ -88,6 +82,7 @@ def main():
         groq_api_key=GROQ_API_KEY,
         model_name=GROQ_MODEL,
         temperature=0,
+        max_tokens=800,
     )
 
     ragas_llm = LangchainLLMWrapper(groq_llm)
@@ -104,12 +99,11 @@ def main():
             ResponseRelevancy(),
             ContextPrecision(),
             ContextRecall(),
-            # Faithfulness may return NaN with Groq because RAGAS may request n > 1 generations.
-            # Keep it if you want to test, remove if it causes repeated timeout issues.
             Faithfulness(),
         ],
         llm=ragas_llm,
         embeddings=ragas_embeddings,
+        raise_exceptions=False,
     )
 
     print("\nRAGAS Evaluation Results")

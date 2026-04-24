@@ -1,8 +1,12 @@
 {
   "claim_id": "CLM-4002",
   "policy_id": "POL-3001",
+  "customer_id": "CUST-7002",
+  "loss_date": "2024-05-20",
+  "reported_date": "2024-05-21",
   "loss_type": "commercial_flood",
+  "claim_status": "under_review",
+  "paid_amount": 0,
   "description": "Flood water entered warehouse after nearby creek overflowed.",
-  "status": "open",
   "state": "TX"
 }

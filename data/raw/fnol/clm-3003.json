@@ -1,8 +1,12 @@
 {
   "claim_id": "CLM-3003",
   "policy_id": "POL-2001",
+  "customer_id": "CUST-6003",
+  "loss_date": "2024-07-14",
+  "reported_date": "2024-07-15",
   "loss_type": "mechanical_breakdown",
-  "description": "Engine failed due to mechanical breakdown.",
-  "status": "closed",
+  "claim_status": "denied",
+  "paid_amount": 0,
+  "description": "Engine failure caused by mechanical breakdown.",
   "state": "TX"
 }

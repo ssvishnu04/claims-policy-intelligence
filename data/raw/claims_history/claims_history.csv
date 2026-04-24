@@ -1,11 +1,13 @@
-claim_id,policy_id,loss_type,description,status,state,paid_amount
-CLM-2001,POL-1001,water_damage,Sudden pipe burst in upstairs bathroom caused water damage to kitchen ceiling.,open,TX,0
-CLM-2002,POL-1001,flood_damage,Heavy rain caused surface water to enter the home through the front door.,open,TX,0
-CLM-2003,POL-1001,roof_wind_damage,Windstorm damaged roof shingles on residential property.,closed,TX,4200
-CLM-3001,POL-2001,auto_collision,Insured vehicle was damaged in a rear-end collision.,open,TX,0
-CLM-3002,POL-2001,hail_damage_auto,Vehicle sustained hail dents during storm.,open,TX,2100
-CLM-3003,POL-2001,mechanical_breakdown,Engine failed due to mechanical breakdown.,closed,TX,0
-CLM-4001,POL-3001,commercial_hail_damage,Hail damaged roof of commercial retail building.,open,TX,0
-CLM-4002,POL-3001,commercial_flood,Flood water entered warehouse after nearby creek overflowed.,open,TX,0
-CLM-4003,POL-3001,fire_damage,Small electrical fire damaged office storage area.,closed,TX,8500
-CLM-4004,POL-3001,wear_and_tear,Roof leak caused by long-term deterioration and poor maintenance.,closed,TX,0
+claim_id,policy_id,customer_id,loss_date,reported_date,loss_type,claim_status,paid_amount,description,state
+CLM-2001,POL-1001,CUST-5001,2024-03-10,2024-03-11,water_damage,open,0,Sudden pipe burst in upstairs bathroom caused water damage to kitchen ceiling and flooring.,TX
+CLM-2002,POL-1001,CUST-5001,2024-04-02,2024-04-03,flood_damage,closed,0,Heavy rain caused surface water to enter the home through the front door.,TX
+CLM-2003,POL-1001,CUST-5002,2024-06-18,2024-06-19,roof_wind_damage,closed,4200,Windstorm damaged roof shingles on residential property.,TX
+CLM-3001,POL-2001,CUST-6001,2024-01-22,2024-01-22,auto_collision,open,0,Insured vehicle was damaged in a rear-end collision.,TX
+CLM-3002,POL-2001,CUST-6002,2024-05-09,2024-05-10,hail_damage_auto,closed,2100,Vehicle sustained hail dents during a severe storm.,TX
+CLM-3003,POL-2001,CUST-6003,2024-07-14,2024-07-15,mechanical_breakdown,denied,0,Engine failure caused by mechanical breakdown.,TX
+CLM-4001,POL-3001,CUST-7001,2024-04-28,2024-04-29,commercial_hail_damage,open,0,Hail damaged roof of commercial retail building.,TX
+CLM-4002,POL-3001,CUST-7002,2024-05-20,2024-05-21,commercial_flood,under_review,0,Flood water entered warehouse after nearby creek overflowed.,TX
+CLM-4003,POL-3001,CUST-7003,2024-02-05,2024-02-05,fire_damage,closed,8500,Small electrical fire damaged office storage area.,TX
+CLM-5001,POL-4001,CUST-8001,2024-08-12,2024-08-13,business_property_theft,open,0,Retail store reported theft of business equipment after overnight break-in.,TX
+CLM-5002,POL-4001,CUST-8002,2024-09-01,2024-09-02,business_interruption,under_review,0,Business operations suspended for three days after covered fire damage to store area.,TX
+CLM-5003,POL-4001,CUST-8003,2024-10-06,2024-10-07,wear_and_tear,denied,0,Damage resulted from long-term deterioration of business property flooring.,TX

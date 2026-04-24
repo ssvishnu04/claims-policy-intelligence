@@ -1,20 +1,39 @@
 {
-  "policy_id": "POL-1001",
-  "customer_id": "CUST-5001",
-  "prior_claims": [
+  "source_system": "claims_core_api",
+  "generated_at": "2024-11-01T10:30:00Z",
+  "records": [
     {
-      "claim_id": "CLM-1801",
-      "loss_date": "2024-08-15",
-      "loss_type": "roof_wind_damage",
-      "paid_amount": 4200,
-      "status": "closed"
+      "customer_id": "CUST-5001",
+      "policy_id": "POL-1001",
+      "prior_claim_count": 2,
+      "prior_claims": [
+        "CLM-2001",
+        "CLM-2002"
+      ]
     },
     {
-      "claim_id": "CLM-1907",
-      "loss_date": "2025-01-22",
-      "loss_type": "minor_water_damage",
-      "paid_amount": 1850,
-      "status": "closed"
+      "customer_id": "CUST-6001",
+      "policy_id": "POL-2001",
+      "prior_claim_count": 1,
+      "prior_claims": [
+        "CLM-3001"
+      ]
+    },
+    {
+      "customer_id": "CUST-7001",
+      "policy_id": "POL-3001",
+      "prior_claim_count": 1,
+      "prior_claims": [
+        "CLM-4001"
+      ]
+    },
+    {
+      "customer_id": "CUST-8001",
+      "policy_id": "POL-4001",
+      "prior_claim_count": 1,
+      "prior_claims": [
+        "CLM-5001"
+      ]
     }
   ]
 }

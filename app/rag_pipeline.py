@@ -42,16 +42,12 @@ def load_documents_from_folder(folder_path: Path, document_type: str) -> List[Do
 
         if file.suffix.lower() == ".txt":
             documents.append(load_text_file(file, base_metadata))
-
         elif file.suffix.lower() == ".json":
             documents.append(load_json_file(file, base_metadata))
-
         elif file.suffix.lower() == ".csv":
             documents.append(load_csv_file(file, base_metadata))
-
         elif file.suffix.lower() == ".pdf":
             documents.extend(load_pdf_file(file, base_metadata))
-
         else:
             print(f"Skipping unsupported file type: {file}")
 
@@ -165,14 +161,6 @@ def isolate_policy_claim_docs(
     policy_id: str,
     claim_id: str,
 ) -> List[Document]:
-    """
-    Strictly isolate context so unrelated claims do not leak into final answer.
-
-    Keeps:
-    1. Claim-specific documents that mention the selected claim_id
-    2. Policy documents that mention the selected policy_id
-    3. Underwriting guidelines only when they are retrieved as relevant
-    """
     policy_id_lower = policy_id.lower().strip()
     claim_id_lower = claim_id.lower().strip()
 
@@ -188,10 +176,8 @@ def isolate_policy_claim_docs(
 
         if has_claim:
             final_docs.append(doc)
-
         elif document_type == "policy" and has_policy:
             final_docs.append(doc)
-
         elif document_type == "uw_guideline":
             final_docs.append(doc)
 
@@ -236,6 +222,7 @@ def get_llm():
         groq_api_key=GROQ_API_KEY,
         model_name=GROQ_MODEL,
         temperature=0,
+        max_tokens=800,
     )
 
 
@@ -243,17 +230,20 @@ def ask_claims_assistant(
     question: str,
     policy_id: str,
     claim_id: str,
-    k: int = 10,
+    k: int = 15,
 ) -> Dict[str, Any]:
 
     claim_profile = get_claim_profile(policy_id, claim_id)
     claim_profile_context = format_claim_profile_for_prompt(claim_profile)
+
+    loss_type = claim_profile.get("claims_history", {}).get("loss_type", "")
 
     vectorstore = load_faiss_index()
 
     scoped_query = f"""
 Policy ID: {policy_id}
 Claim ID: {claim_id}
+Loss Type: {loss_type}
 Question: {question}
 """
 
@@ -291,24 +281,41 @@ RETRIEVED DOCUMENT CONTEXT
                 """
 You are an AI Claims & Policy Assistant for a Property & Casualty insurance company.
 
-Rules:
+STRICT GROUNDING RULES:
 1. Answer only using the provided context.
 2. You MUST strictly restrict all outputs to the provided Claim ID and Policy ID.
 3. DO NOT include any other claim IDs.
 4. DO NOT include any other policy IDs.
 5. If multiple claims appear in context, ONLY extract and return data for the given Claim ID.
 6. If unrelated claims are present, IGNORE them completely.
-7. You MUST always use STRUCTURED CLAIM PROFILE for claim facts such as:
+7. NEVER infer, assume, generalize, or use prior knowledge.
+8. NEVER complete missing information.
+9. If a field is missing in STRUCTURED CLAIM PROFILE or RETRIEVED DOCUMENT CONTEXT, return "Not Available".
+10. If unsure, say "Not enough information available."
+
+SOURCE PRIORITY RULES:
+1. You MUST always prioritize STRUCTURED CLAIM PROFILE for claim facts:
    - loss date
    - claim status
    - paid amount
    - loss type
    - repair estimates
-8. Do NOT rely on retrieved documents for structured claim fields if the STRUCTURED CLAIM PROFILE contains those fields.
-9. Use RETRIEVED DOCUMENT CONTEXT for policy language, exclusions, adjuster notes, underwriting guidance, and supporting documents.
-10. Do not make up policy terms, exclusions, deductibles, dates, amounts, or claim facts.
-11. If the context does not support the answer, clearly say more information is needed.
-12. If the user asks for complete claim details, present claim details in a clean markdown table.
+   - claim description
+   - state
+2. Do NOT rely on retrieved documents for structured claim fields if STRUCTURED CLAIM PROFILE contains those fields.
+3. Use RETRIEVED DOCUMENT CONTEXT only for:
+   - policy language
+   - coverage terms
+   - exclusions
+   - deductibles
+   - adjuster notes
+   - underwriting guidance
+   - supporting documents
+
+OUTPUT RULES:
+1. Do not make up policy terms, exclusions, deductibles, dates, amounts, or claim facts.
+2. If the user asks for complete claim details, present claim details in a clean markdown table.
+3. Keep the answer concise and business-friendly.
 
 Return your answer in this format:
 

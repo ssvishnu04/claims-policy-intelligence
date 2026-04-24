@@ -2,11 +2,15 @@ Policy ID: POL-1001
 Product: Homeowners HO-3
 State: Texas
 
-WATER DAMAGE
-We cover sudden and accidental discharge or overflow of water from within a plumbing system.
+COVERAGE TYPE: Water Damage
+DEDUCTIBLE: $1,000
+COVERAGE LIMIT: $50,000
+
+WATER DAMAGE COVERAGE
+We cover sudden and accidental discharge or overflow of water from within a plumbing system, heating system, air conditioning system, appliance, or fire sprinkler system.
 
 EXCLUSIONS
-We do not cover flood, surface water, underground water seepage, or repeated leakage over 14 days or more.
+We do not cover flood, surface water, storm surge, water below the surface of the ground, or repeated seepage or leakage over 14 days or more.
 
-DEDUCTIBLE
-A deductible of $2,500 applies to covered property losses.
+LOSS SETTLEMENT
+Covered losses are settled based on actual cash value unless replacement cost coverage applies.

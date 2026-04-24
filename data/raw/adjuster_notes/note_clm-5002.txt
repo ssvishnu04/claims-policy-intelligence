@@ -1,11 +1,11 @@
-Claim ID: CLM-4002
-Policy ID: POL-3001
-Loss Date: 2024-05-20
-Loss Type: commercial_flood
+Claim ID: CLM-5002
+Policy ID: POL-4001
+Loss Date: 2024-09-01
+Loss Type: business_interruption
 Claim Status: under_review
 
 Adjuster Note:
-Flood water entered warehouse after nearby creek overflowed.
+Business operations suspended for three days after covered fire damage to store area.
 
 Initial Review:
 The adjuster should compare the cause of loss against policy coverage, exclusions, deductible, claim history, and supporting documents.

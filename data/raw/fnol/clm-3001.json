@@ -1,8 +1,12 @@
 {
   "claim_id": "CLM-3001",
   "policy_id": "POL-2001",
+  "customer_id": "CUST-6001",
+  "loss_date": "2024-01-22",
+  "reported_date": "2024-01-22",
   "loss_type": "auto_collision",
+  "claim_status": "open",
+  "paid_amount": 0,
   "description": "Insured vehicle was damaged in a rear-end collision.",
-  "status": "open",
   "state": "TX"
 }

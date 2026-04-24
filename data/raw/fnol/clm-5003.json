@@ -1,0 +1,12 @@
+{
+  "claim_id": "CLM-5003",
+  "policy_id": "POL-4001",
+  "customer_id": "CUST-8003",
+  "loss_date": "2024-10-06",
+  "reported_date": "2024-10-07",
+  "loss_type": "wear_and_tear",
+  "claim_status": "denied",
+  "paid_amount": 0,
+  "description": "Damage resulted from long-term deterioration of business property flooring.",
+  "state": "TX"
+}

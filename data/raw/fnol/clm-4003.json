@@ -1,8 +1,12 @@
 {
   "claim_id": "CLM-4003",
   "policy_id": "POL-3001",
+  "customer_id": "CUST-7003",
+  "loss_date": "2024-02-05",
+  "reported_date": "2024-02-05",
   "loss_type": "fire_damage",
+  "claim_status": "closed",
+  "paid_amount": 8500,
   "description": "Small electrical fire damaged office storage area.",
-  "status": "closed",
   "state": "TX"
 }

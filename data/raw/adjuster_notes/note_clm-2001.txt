@@ -1,8 +1,11 @@
 Claim ID: CLM-2001
 Policy ID: POL-1001
+Loss Date: 2024-03-10
 Loss Type: water_damage
+Claim Status: open
 
 Adjuster Note:
-Sudden pipe burst in upstairs bathroom caused water damage to kitchen ceiling.
+Sudden pipe burst in upstairs bathroom caused water damage to kitchen ceiling and flooring.
 
-Initial review indicates the claim should be compared against policy coverage, exclusions, deductible, and loss conditions.
+Initial Review:
+The adjuster should compare the cause of loss against policy coverage, exclusions, deductible, claim history, and supporting documents.

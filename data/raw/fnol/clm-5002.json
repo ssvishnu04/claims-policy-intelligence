@@ -1,0 +1,12 @@
+{
+  "claim_id": "CLM-5002",
+  "policy_id": "POL-4001",
+  "customer_id": "CUST-8002",
+  "loss_date": "2024-09-01",
+  "reported_date": "2024-09-02",
+  "loss_type": "business_interruption",
+  "claim_status": "under_review",
+  "paid_amount": 0,
+  "description": "Business operations suspended for three days after covered fire damage to store area.",
+  "state": "TX"
+}

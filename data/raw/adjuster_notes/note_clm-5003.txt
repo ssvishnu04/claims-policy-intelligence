@@ -1,11 +1,11 @@
-Claim ID: CLM-3003
-Policy ID: POL-2001
-Loss Date: 2024-07-14
-Loss Type: mechanical_breakdown
+Claim ID: CLM-5003
+Policy ID: POL-4001
+Loss Date: 2024-10-06
+Loss Type: wear_and_tear
 Claim Status: denied
 
 Adjuster Note:
-Engine failure caused by mechanical breakdown.
+Damage resulted from long-term deterioration of business property flooring.
 
 Initial Review:
 The adjuster should compare the cause of loss against policy coverage, exclusions, deductible, claim history, and supporting documents.

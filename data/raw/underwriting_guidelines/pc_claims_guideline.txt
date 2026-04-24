@@ -1,17 +1,32 @@
-Underwriting Guideline: P&C Claims Review
+Underwriting Guideline: Property & Casualty Claims Review
 
-Adjusters should validate:
+General claim review should validate:
 - Policy ID
 - Claim ID
-- Cause of loss
 - Loss date
-- Applicable exclusions
+- Cause of loss
+- Applicable coverage
 - Deductible
+- Exclusions
 - Prior claims history
 - Supporting documentation
 
-Water damage caused by sudden pipe burst may be covered under homeowners policies.
-Flood and surface water are commonly excluded unless separate flood coverage exists.
-Auto collision may be covered if collision coverage is active.
-Mechanical breakdown is commonly excluded under personal auto policies.
-Commercial wind and hail losses may be covered subject to deductible and maintenance review.
+Homeowners:
+Sudden and accidental water discharge may be covered.
+Flood and surface water are generally excluded unless separate flood coverage exists.
+Repeated seepage over 14 days or more is commonly excluded.
+
+Personal Auto:
+Collision losses may be covered under collision coverage.
+Hail damage may be covered under comprehensive coverage.
+Mechanical breakdown is generally excluded.
+
+Commercial Property:
+Wind and hail damage may be covered subject to roof condition and deductible.
+Flood is generally excluded unless separate flood endorsement exists.
+Wear and tear, deterioration, and poor maintenance are generally excluded.
+
+Business Owners Policy:
+Theft of business property may be covered if evidence supports forced entry.
+Business interruption requires covered direct physical loss.
+Wear and tear is excluded.

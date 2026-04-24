@@ -1,8 +1,12 @@
 {
   "claim_id": "CLM-2002",
   "policy_id": "POL-1001",
+  "customer_id": "CUST-5001",
+  "loss_date": "2024-04-02",
+  "reported_date": "2024-04-03",
   "loss_type": "flood_damage",
+  "claim_status": "closed",
+  "paid_amount": 0,
   "description": "Heavy rain caused surface water to enter the home through the front door.",
-  "status": "open",
   "state": "TX"
 }

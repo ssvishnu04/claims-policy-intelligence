@@ -1,11 +1,11 @@
-Claim ID: CLM-4001
-Policy ID: POL-3001
-Loss Date: 2024-04-28
-Loss Type: commercial_hail_damage
+Claim ID: CLM-5001
+Policy ID: POL-4001
+Loss Date: 2024-08-12
+Loss Type: business_property_theft
 Claim Status: open
 
 Adjuster Note:
-Hail damaged roof of commercial retail building.
+Retail store reported theft of business equipment after overnight break-in.
 
 Initial Review:
 The adjuster should compare the cause of loss against policy coverage, exclusions, deductible, claim history, and supporting documents.
