@@ -9,6 +9,26 @@ This application helps claims adjusters and underwriters quickly retrieve covera
 - Python
 - Streamlit
 - LangChain
-- OpenAI
-- FAISS
+- Hugging Face (Embeddings)
+- FAISS (Vector Search)
+- Groq API (LLM)
 - RAGAS
+
+## Key Concepts
+
+- **FNOL (First Notice of Loss):** The initial report of a claim submitted by the insured.
+- **RAG (Retrieval-Augmented Generation):** Combines document retrieval with LLM responses.
+- **Vector Search:** Enables semantic search using embeddings.
+
+## Architecture (High Level)
+
+```text
+Data Sources
+(PDFs, FNOL JSON, Notes, Guidelines)
+        ↓
+Ingestion Pipeline
+        ↓
+Document Normalization
+        ↓
+(Next Steps)
+Chunking → Embeddings → FAISS → RAG → Streamlit UI

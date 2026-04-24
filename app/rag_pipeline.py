@@ -1,5 +1,6 @@
 from pathlib import Path
 from typing import List
+
 from langchain_core.documents import Document
 
 from app.config import RAW_DATA_DIR
@@ -10,7 +11,7 @@ def load_all_documents() -> List[Document]:
     base_path = Path(RAW_DATA_DIR)
     documents = []
 
-    # Policies
+    # Load policy documents
     for file in (base_path / "policies").glob("*.*"):
         documents.append(
             load_text_file(
@@ -18,12 +19,12 @@ def load_all_documents() -> List[Document]:
                 {
                     "document_type": "policy",
                     "source": str(file),
-                    "filename": file.name
-                }
+                    "filename": file.name,
+                },
             )
         )
 
-    # FNOL
+    # Load FNOL JSON files
     for file in (base_path / "fnol").glob("*.json"):
         documents.append(
             load_json_file(
@@ -31,12 +32,12 @@ def load_all_documents() -> List[Document]:
                 {
                     "document_type": "fnol",
                     "source": str(file),
-                    "filename": file.name
-                }
+                    "filename": file.name,
+                },
             )
         )
 
-    # Adjuster Notes
+    # Load adjuster notes
     for file in (base_path / "adjuster_notes").glob("*.*"):
         documents.append(
             load_text_file(
@@ -44,12 +45,12 @@ def load_all_documents() -> List[Document]:
                 {
                     "document_type": "adjuster_note",
                     "source": str(file),
-                    "filename": file.name
-                }
+                    "filename": file.name,
+                },
             )
         )
 
-    # Underwriting Guidelines
+    # Load underwriting guidelines
     for file in (base_path / "underwriting_guidelines").glob("*.*"):
         documents.append(
             load_text_file(
@@ -57,8 +58,8 @@ def load_all_documents() -> List[Document]:
                 {
                     "document_type": "uw_guideline",
                     "source": str(file),
-                    "filename": file.name
-                }
+                    "filename": file.name,
+                },
             )
         )
 
@@ -71,6 +72,8 @@ if __name__ == "__main__":
 
     for doc in docs:
         print("=" * 80)
+        print("Metadata:")
         print(doc.metadata)
+        print("\nContent Preview:")
         print(doc.page_content[:500])
         print()
