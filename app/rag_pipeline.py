@@ -128,6 +128,33 @@ def load_faiss_index() -> FAISS:
     )
 
 
+def filter_docs_by_policy_claim(
+    docs: List[Document],
+    policy_id: str,
+    claim_id: str,
+) -> List[Document]:
+    """
+    Keeps only chunks related to the selected policy or claim.
+    This improves retrieval precision and avoids mixing unrelated claims/policies.
+    """
+    filtered_docs = []
+
+    policy_id_lower = policy_id.lower().strip()
+    claim_id_lower = claim_id.lower().strip()
+
+    for doc in docs:
+        content = doc.page_content.lower()
+        metadata_text = " ".join(str(value).lower() for value in doc.metadata.values())
+
+        policy_match = policy_id_lower in content or policy_id_lower in metadata_text
+        claim_match = claim_id_lower in content or claim_id_lower in metadata_text
+
+        if policy_match or claim_match:
+            filtered_docs.append(doc)
+
+    return filtered_docs
+
+
 def format_context(docs: List[Document]) -> str:
     context_blocks = []
 
@@ -159,7 +186,7 @@ def ask_claims_assistant(
     question: str,
     policy_id: str,
     claim_id: str,
-    k: int = 5,
+    k: int = 10,
 ) -> Dict[str, Any]:
 
     vectorstore = load_faiss_index()
@@ -171,7 +198,34 @@ Question: {question}
 """
 
     retrieved_docs = vectorstore.similarity_search(scoped_query, k=k)
-    context = format_context(retrieved_docs)
+
+    filtered_docs = filter_docs_by_policy_claim(
+        docs=retrieved_docs,
+        policy_id=policy_id,
+        claim_id=claim_id,
+    )
+
+    # If strict filtering removes everything, return a safe response.
+    if not filtered_docs:
+        return {
+            "answer": (
+                "Decision Summary:\n"
+                "I could not find enough matching context for the provided Policy ID and Claim ID.\n\n"
+                "Coverage Details:\n"
+                "Not enough information available.\n\n"
+                "Exclusions / Limitations:\n"
+                "Not enough information available.\n\n"
+                "Claim or Prior Loss Context:\n"
+                "No matching claim or policy context was found.\n\n"
+                "Recommended Next Steps:\n"
+                "Verify that the Policy ID and Claim ID are correct and rebuild the FAISS index if new documents were added.\n\n"
+                "Sources Used:\n"
+                "No matching sources found."
+            ),
+            "sources": [],
+        }
+
+    context = format_context(filtered_docs)
 
     prompt = ChatPromptTemplate.from_messages(
         [
@@ -183,10 +237,11 @@ You are an AI Claims & Policy Assistant for a Property & Casualty insurance comp
 Rules:
 1. Answer only using the retrieved context.
 2. Only answer for the provided Policy ID and Claim ID.
-3. Do not make up policy terms, exclusions, deductibles, or claim facts.
-4. If the context does not support the answer, clearly say more information is needed.
-5. Explain the answer in simple insurance business language.
-6. Mention relevant source files when useful.
+3. Do not use unrelated policies, claims, or documents.
+4. Do not make up policy terms, exclusions, deductibles, or claim facts.
+5. If the context does not support the answer, clearly say more information is needed.
+6. Explain the answer in simple insurance business language.
+7. Mention relevant source files when useful.
 
 Return your answer in this format:
 
@@ -230,7 +285,7 @@ Retrieved Context:
 
     return {
         "answer": answer,
-        "sources": retrieved_docs,
+        "sources": filtered_docs,
     }
 
 
@@ -252,13 +307,6 @@ def test_search(query: str, k: int = 4) -> None:
 
 
 if __name__ == "__main__":
-    # IMPORTANT:
-    # Do NOT rebuild the FAISS index every time.
-    # Rebuild only when documents are added or changed.
-    #
-    # To rebuild manually, run:
-    # python -c "from app.rag_pipeline import build_faiss_index; build_faiss_index()"
-
     result = ask_claims_assistant(
         policy_id="POL-1001",
         claim_id="CLM-2001",

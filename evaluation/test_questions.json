@@ -1,0 +1,32 @@
+[
+  {
+    "policy_id": "POL-1001",
+    "claim_id": "CLM-2001",
+    "question": "Is this sudden pipe burst water damage covered?",
+    "ground_truth": "Sudden and accidental discharge from a plumbing system may be covered under the homeowners policy, subject to deductible and exclusions."
+  },
+  {
+    "policy_id": "POL-1001",
+    "claim_id": "CLM-2002",
+    "question": "Is flood damage covered under this homeowners policy?",
+    "ground_truth": "Flood and surface water are excluded under the homeowners policy unless separate flood coverage exists."
+  },
+  {
+    "policy_id": "POL-2001",
+    "claim_id": "CLM-3001",
+    "question": "Is rear-end collision damage covered?",
+    "ground_truth": "Collision damage may be covered under the personal auto policy, subject to the collision deductible."
+  },
+  {
+    "policy_id": "POL-2001",
+    "claim_id": "CLM-3003",
+    "question": "Is mechanical breakdown covered?",
+    "ground_truth": "Mechanical breakdown is excluded under the personal auto policy."
+  },
+  {
+    "policy_id": "POL-3001",
+    "claim_id": "CLM-4001",
+    "question": "Is commercial hail damage covered?",
+    "ground_truth": "Commercial wind and hail damage may be covered subject to deductible and policy conditions."
+  }
+]

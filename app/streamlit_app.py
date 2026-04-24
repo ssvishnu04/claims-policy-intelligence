@@ -6,6 +6,7 @@ ROOT_DIR = Path(__file__).resolve().parents[1]
 if str(ROOT_DIR) not in sys.path:
     sys.path.insert(0, str(ROOT_DIR))
 
+
 st.set_page_config(
     page_title="Claims & Policy Intelligence Platform",
     page_icon="",
@@ -22,8 +23,16 @@ claim context, and supporting evidence from insurance documents.
 
 with st.sidebar:
     st.header("Claim Context")
-    policy_id = st.text_input("Policy ID", value="POL-1001")
-    claim_id = st.text_input("Claim ID", value="CLM-2001")
+
+    policy_id = st.text_input(
+        "Policy ID",
+        placeholder="Example: POL-1001"
+    )
+
+    claim_id = st.text_input(
+        "Claim ID",
+        placeholder="Example: CLM-2001"
+    )
 
     st.markdown("---")
     st.markdown("### Sample Questions")
@@ -37,7 +46,7 @@ with st.sidebar:
 
 question = st.text_area(
     "Ask a claims or policy question",
-    value="Is this sudden pipe burst water damage covered and what exclusions apply?",
+    placeholder="Example: Is this sudden pipe burst water damage covered and what exclusions apply?",
     height=120
 )
 
@@ -52,7 +61,7 @@ if st.button("Analyze Claim", type="primary"):
                 result = ask_claims_assistant(
                     question=question,
                     policy_id=policy_id,
-                    claim_id=claim_id
+                    claim_id=claim_id,
                 )
 
             st.subheader("AI Answer")
@@ -60,16 +69,20 @@ if st.button("Analyze Claim", type="primary"):
 
             st.subheader("Retrieved Sources")
 
-            for i, source in enumerate(result["sources"], start=1):
-                metadata = source.metadata
-                with st.expander(
-                    f"Source {i}: {metadata.get('filename')} | {metadata.get('document_type')}"
-                ):
-                    st.write("**Metadata:**")
-                    st.json(metadata)
+            if not result["sources"]:
+                st.warning("No matching source documents found for this Policy ID and Claim ID.")
+            else:
+                for i, source in enumerate(result["sources"], start=1):
+                    metadata = source.metadata
 
-                    st.write("**Content:**")
-                    st.write(source.page_content)
+                    with st.expander(
+                        f"Source {i}: {metadata.get('filename')} | {metadata.get('document_type')}"
+                    ):
+                        st.write("**Metadata:**")
+                        st.json(metadata)
+
+                        st.write("**Content:**")
+                        st.write(source.page_content)
 
         except Exception as e:
             st.error("The RAG app failed while processing.")
