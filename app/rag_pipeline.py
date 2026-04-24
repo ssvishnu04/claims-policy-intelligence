@@ -119,6 +119,13 @@ def build_faiss_index() -> None:
 
 
 def load_faiss_index() -> FAISS:
+    index_file = Path(FAISS_INDEX_DIR) / "index.faiss"
+    pkl_file = Path(FAISS_INDEX_DIR) / "index.pkl"
+
+    if not index_file.exists() or not pkl_file.exists():
+        print("FAISS index not found. Building index now...")
+        build_faiss_index()
+
     embeddings = get_embeddings()
 
     return FAISS.load_local(
