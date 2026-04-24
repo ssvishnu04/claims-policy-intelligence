@@ -1,4 +1,11 @@
-claim_id,policy_id,loss_date,loss_type,claim_status,paid_amount,state
-CLM-1801,POL-1001,2024-08-15,roof_wind_damage,closed,4200,TX
-CLM-1907,POL-1001,2025-01-22,minor_water_damage,closed,1850,TX
-CLM-2001,POL-1001,2026-03-10,water_damage,open,0,TX
+claim_id,policy_id,loss_type,description,status,state,paid_amount
+CLM-2001,POL-1001,water_damage,Sudden pipe burst in upstairs bathroom caused water damage to kitchen ceiling.,open,TX,0
+CLM-2002,POL-1001,flood_damage,Heavy rain caused surface water to enter the home through the front door.,open,TX,0
+CLM-2003,POL-1001,roof_wind_damage,Windstorm damaged roof shingles on residential property.,closed,TX,4200
+CLM-3001,POL-2001,auto_collision,Insured vehicle was damaged in a rear-end collision.,open,TX,0
+CLM-3002,POL-2001,hail_damage_auto,Vehicle sustained hail dents during storm.,open,TX,2100
+CLM-3003,POL-2001,mechanical_breakdown,Engine failed due to mechanical breakdown.,closed,TX,0
+CLM-4001,POL-3001,commercial_hail_damage,Hail damaged roof of commercial retail building.,open,TX,0
+CLM-4002,POL-3001,commercial_flood,Flood water entered warehouse after nearby creek overflowed.,open,TX,0
+CLM-4003,POL-3001,fire_damage,Small electrical fire damaged office storage area.,closed,TX,8500
+CLM-4004,POL-3001,wear_and_tear,Roof leak caused by long-term deterioration and poor maintenance.,closed,TX,0

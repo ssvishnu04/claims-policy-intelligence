@@ -1,0 +1,8 @@
+{
+  "claim_id": "CLM-3001",
+  "policy_id": "POL-2001",
+  "loss_type": "auto_collision",
+  "description": "Insured vehicle was damaged in a rear-end collision.",
+  "status": "open",
+  "state": "TX"
+}

@@ -1,12 +1,21 @@
 from pathlib import Path
-from typing import List
+from typing import List, Dict, Any
 
 from langchain_core.documents import Document
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 from langchain_huggingface import HuggingFaceEmbeddings
 from langchain_community.vectorstores import FAISS
+from langchain_groq import ChatGroq
+from langchain_core.prompts import ChatPromptTemplate
+from langchain_core.output_parsers import StrOutputParser
 
-from app.config import RAW_DATA_DIR, FAISS_INDEX_DIR, EMBEDDING_MODEL
+from app.config import (
+    RAW_DATA_DIR,
+    FAISS_INDEX_DIR,
+    EMBEDDING_MODEL,
+    GROQ_API_KEY,
+    GROQ_MODEL,
+)
 from app.utils import (
     load_text_file,
     load_json_file,
@@ -62,11 +71,9 @@ def load_all_documents() -> List[Document]:
     all_documents = []
 
     for folder_name, document_type in folder_mapping.items():
-        folder_docs = load_documents_from_folder(
-            base_path / folder_name,
-            document_type
+        all_documents.extend(
+            load_documents_from_folder(base_path / folder_name, document_type)
         )
-        all_documents.extend(folder_docs)
 
     return all_documents
 
@@ -74,7 +81,7 @@ def load_all_documents() -> List[Document]:
 def split_documents(documents: List[Document]) -> List[Document]:
     splitter = RecursiveCharacterTextSplitter(
         chunk_size=700,
-        chunk_overlap=120
+        chunk_overlap=120,
     )
 
     chunks = splitter.split_documents(documents)
@@ -86,9 +93,7 @@ def split_documents(documents: List[Document]) -> List[Document]:
 
 
 def get_embeddings():
-    return HuggingFaceEmbeddings(
-        model_name=EMBEDDING_MODEL
-    )
+    return HuggingFaceEmbeddings(model_name=EMBEDDING_MODEL)
 
 
 def build_faiss_index() -> None:
@@ -102,7 +107,7 @@ def build_faiss_index() -> None:
 
     vectorstore = FAISS.from_documents(
         documents=chunks,
-        embedding=embeddings
+        embedding=embeddings,
     )
 
     Path(FAISS_INDEX_DIR).mkdir(parents=True, exist_ok=True)
@@ -114,13 +119,96 @@ def build_faiss_index() -> None:
 def load_faiss_index() -> FAISS:
     embeddings = get_embeddings()
 
-    vectorstore = FAISS.load_local(
+    return FAISS.load_local(
         FAISS_INDEX_DIR,
         embeddings,
-        allow_dangerous_deserialization=True
+        allow_dangerous_deserialization=True,
     )
 
-    return vectorstore
+
+def format_context(docs: List[Document]) -> str:
+    context_blocks = []
+
+    for i, doc in enumerate(docs, start=1):
+        context_blocks.append(
+            f"""
+SOURCE {i}
+Document Type: {doc.metadata.get("document_type")}
+File Name: {doc.metadata.get("filename")}
+Chunk ID: {doc.metadata.get("chunk_id")}
+
+Content:
+{doc.page_content}
+"""
+        )
+
+    return "\n".join(context_blocks)
+
+
+def get_llm():
+    return ChatGroq(
+        groq_api_key=GROQ_API_KEY,
+        model_name=GROQ_MODEL,
+        temperature=0,
+    )
+
+
+def ask_claims_assistant(question: str, k: int = 4) -> Dict[str, Any]:
+    vectorstore = load_faiss_index()
+    retrieved_docs = vectorstore.similarity_search(question, k=k)
+
+    context = format_context(retrieved_docs)
+
+    prompt = ChatPromptTemplate.from_messages(
+        [
+            (
+                "system",
+                """
+You are an AI Claims & Policy Assistant for a Property & Casualty insurance company.
+
+Rules:
+1. Answer only using the provided context.
+2. Do not make up policy terms, exclusions, or claim facts.
+3. If context is insufficient, clearly say what information is missing.
+4. Explain your reasoning in simple insurance business language.
+5. Mention relevant source files when useful.
+
+Return your answer in this format:
+
+Decision Summary:
+Coverage Details:
+Exclusions / Limitations:
+Claim or Prior Loss Context:
+Recommended Next Steps:
+Sources Used:
+""",
+            ),
+            (
+                "human",
+                """
+Question:
+{question}
+
+Retrieved Context:
+{context}
+""",
+            ),
+        ]
+    )
+
+    chain = prompt | get_llm() | StrOutputParser()
+
+    answer = chain.invoke(
+        {
+            "question": question,
+            "context": context,
+        }
+    )
+
+    return {
+        "answer": answer,
+        "sources": retrieved_docs,
+    }
 
 
 def test_search(query: str, k: int = 4) -> None:
@@ -143,14 +231,16 @@ def test_search(query: str, k: int = 4) -> None:
 if __name__ == "__main__":
     build_faiss_index()
 
-    test_search(
-        "Is sudden pipe burst water damage covered and what exclusions apply?"
-    )
+    question = "Is sudden pipe burst water damage covered and what exclusions apply?"
 
-    test_search(
-        "Does the customer have any prior claims?"
-    )
+    result = ask_claims_assistant(question)
 
-    test_search(
-        "What is the estimated repair cost for claim CLM-2001?"
-    )
+    print("\nQUESTION:")
+    print(question)
+
+    print("\nANSWER:")
+    print(result["answer"])
+
+    print("\nSOURCES:")
+    for source in result["sources"]:
+        print(source.metadata)

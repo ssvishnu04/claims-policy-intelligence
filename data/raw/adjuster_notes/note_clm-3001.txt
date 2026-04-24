@@ -1,0 +1,8 @@
+Claim ID: CLM-3001
+Policy ID: POL-2001
+Loss Type: auto_collision
+
+Adjuster Note:
+Insured vehicle was damaged in a rear-end collision.
+
+Initial review indicates the claim should be compared against policy coverage, exclusions, deductible, and loss conditions.

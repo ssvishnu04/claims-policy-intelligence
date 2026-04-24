@@ -1,0 +1,8 @@
+{
+  "claim_id": "CLM-4003",
+  "policy_id": "POL-3001",
+  "loss_type": "fire_damage",
+  "description": "Small electrical fire damaged office storage area.",
+  "status": "closed",
+  "state": "TX"
+}

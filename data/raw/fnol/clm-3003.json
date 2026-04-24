@@ -1,0 +1,8 @@
+{
+  "claim_id": "CLM-3003",
+  "policy_id": "POL-2001",
+  "loss_type": "mechanical_breakdown",
+  "description": "Engine failed due to mechanical breakdown.",
+  "status": "closed",
+  "state": "TX"
+}

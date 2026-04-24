@@ -1,0 +1,8 @@
+{
+  "claim_id": "CLM-4004",
+  "policy_id": "POL-3001",
+  "loss_type": "wear_and_tear",
+  "description": "Roof leak caused by long-term deterioration and poor maintenance.",
+  "status": "closed",
+  "state": "TX"
+}

@@ -1,0 +1,8 @@
+Claim ID: CLM-3002
+Policy ID: POL-2001
+Loss Type: hail_damage_auto
+
+Adjuster Note:
+Vehicle sustained hail dents during storm.
+
+Initial review indicates the claim should be compared against policy coverage, exclusions, deductible, and loss conditions.

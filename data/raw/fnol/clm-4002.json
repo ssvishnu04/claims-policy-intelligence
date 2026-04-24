@@ -1,0 +1,8 @@
+{
+  "claim_id": "CLM-4002",
+  "policy_id": "POL-3001",
+  "loss_type": "commercial_flood",
+  "description": "Flood water entered warehouse after nearby creek overflowed.",
+  "status": "open",
+  "state": "TX"
+}

@@ -1,0 +1,8 @@
+Claim ID: CLM-4002
+Policy ID: POL-3001
+Loss Type: commercial_flood
+
+Adjuster Note:
+Flood water entered warehouse after nearby creek overflowed.
+
+Initial review indicates the claim should be compared against policy coverage, exclusions, deductible, and loss conditions.

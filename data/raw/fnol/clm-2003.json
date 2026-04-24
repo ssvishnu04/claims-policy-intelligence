@@ -1,0 +1,8 @@
+{
+  "claim_id": "CLM-2003",
+  "policy_id": "POL-1001",
+  "loss_type": "roof_wind_damage",
+  "description": "Windstorm damaged roof shingles on residential property.",
+  "status": "closed",
+  "state": "TX"
+}

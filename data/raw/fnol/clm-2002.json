@@ -1,0 +1,8 @@
+{
+  "claim_id": "CLM-2002",
+  "policy_id": "POL-1001",
+  "loss_type": "flood_damage",
+  "description": "Heavy rain caused surface water to enter the home through the front door.",
+  "status": "open",
+  "state": "TX"
+}

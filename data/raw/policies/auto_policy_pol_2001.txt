@@ -1,0 +1,15 @@
+Policy ID: POL-2001
+Product: Personal Auto
+State: Texas
+
+COLLISION COVERAGE
+We cover direct and accidental loss to your covered auto caused by collision.
+
+COMPREHENSIVE COVERAGE
+We cover theft, fire, vandalism, hail, falling objects, and animal impact.
+
+EXCLUSIONS
+We do not cover intentional damage, racing, mechanical breakdown, or wear and tear.
+
+DEDUCTIBLE
+A deductible of $500 applies to collision losses.

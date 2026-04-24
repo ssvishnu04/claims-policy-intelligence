@@ -1,0 +1,8 @@
+{
+  "claim_id": "CLM-3002",
+  "policy_id": "POL-2001",
+  "loss_type": "hail_damage_auto",
+  "description": "Vehicle sustained hail dents during storm.",
+  "status": "open",
+  "state": "TX"
+}

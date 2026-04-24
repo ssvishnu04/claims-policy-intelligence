@@ -1,0 +1,8 @@
+Claim ID: CLM-3003
+Policy ID: POL-2001
+Loss Type: mechanical_breakdown
+
+Adjuster Note:
+Engine failed due to mechanical breakdown.
+
+Initial review indicates the claim should be compared against policy coverage, exclusions, deductible, and loss conditions.

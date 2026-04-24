@@ -1,0 +1,8 @@
+Claim ID: CLM-4001
+Policy ID: POL-3001
+Loss Type: commercial_hail_damage
+
+Adjuster Note:
+Hail damaged roof of commercial retail building.
+
+Initial review indicates the claim should be compared against policy coverage, exclusions, deductible, and loss conditions.
