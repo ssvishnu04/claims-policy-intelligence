@@ -16,6 +16,7 @@ from app.config import (
     GROQ_API_KEY,
     GROQ_MODEL,
 )
+
 from app.utils import (
     load_text_file,
     load_json_file,
@@ -66,6 +67,7 @@ def load_all_documents() -> List[Document]:
         "adjuster_notes": "adjuster_note",
         "underwriting_guidelines": "uw_guideline",
         "repair_estimates": "repair_estimate",
+        "supporting_documents": "supporting_document",
     }
 
     all_documents = []
@@ -80,8 +82,8 @@ def load_all_documents() -> List[Document]:
 
 def split_documents(documents: List[Document]) -> List[Document]:
     splitter = RecursiveCharacterTextSplitter(
-        chunk_size=700,
-        chunk_overlap=120,
+        chunk_size=500,
+        chunk_overlap=80,
     )
 
     chunks = splitter.split_documents(documents)
@@ -153,10 +155,22 @@ def get_llm():
     )
 
 
-def ask_claims_assistant(question: str, k: int = 4) -> Dict[str, Any]:
-    vectorstore = load_faiss_index()
-    retrieved_docs = vectorstore.similarity_search(question, k=k)
+def ask_claims_assistant(
+    question: str,
+    policy_id: str,
+    claim_id: str,
+    k: int = 5,
+) -> Dict[str, Any]:
 
+    vectorstore = load_faiss_index()
+
+    scoped_query = f"""
+Policy ID: {policy_id}
+Claim ID: {claim_id}
+Question: {question}
+"""
+
+    retrieved_docs = vectorstore.similarity_search(scoped_query, k=k)
     context = format_context(retrieved_docs)
 
     prompt = ChatPromptTemplate.from_messages(
@@ -167,11 +181,12 @@ def ask_claims_assistant(question: str, k: int = 4) -> Dict[str, Any]:
 You are an AI Claims & Policy Assistant for a Property & Casualty insurance company.
 
 Rules:
-1. Answer only using the provided context.
-2. Do not make up policy terms, exclusions, or claim facts.
-3. If context is insufficient, clearly say what information is missing.
-4. Explain your reasoning in simple insurance business language.
-5. Mention relevant source files when useful.
+1. Answer only using the retrieved context.
+2. Only answer for the provided Policy ID and Claim ID.
+3. Do not make up policy terms, exclusions, deductibles, or claim facts.
+4. If the context does not support the answer, clearly say more information is needed.
+5. Explain the answer in simple insurance business language.
+6. Mention relevant source files when useful.
 
 Return your answer in this format:
 
@@ -186,6 +201,12 @@ Sources Used:
             (
                 "human",
                 """
+Policy ID:
+{policy_id}
+
+Claim ID:
+{claim_id}
+
 Question:
 {question}
 
@@ -200,6 +221,8 @@ Retrieved Context:
 
     answer = chain.invoke(
         {
+            "policy_id": policy_id,
+            "claim_id": claim_id,
             "question": question,
             "context": context,
         }
@@ -229,14 +252,18 @@ def test_search(query: str, k: int = 4) -> None:
 
 
 if __name__ == "__main__":
-    build_faiss_index()
+    # IMPORTANT:
+    # Do NOT rebuild the FAISS index every time.
+    # Rebuild only when documents are added or changed.
+    #
+    # To rebuild manually, run:
+    # python -c "from app.rag_pipeline import build_faiss_index; build_faiss_index()"
 
-    question = "Is sudden pipe burst water damage covered and what exclusions apply?"
-
-    result = ask_claims_assistant(question)
-
-    print("\nQUESTION:")
-    print(question)
+    result = ask_claims_assistant(
+        policy_id="POL-1001",
+        claim_id="CLM-2001",
+        question="Is this sudden pipe burst water damage covered and what exclusions apply?",
+    )
 
     print("\nANSWER:")
     print(result["answer"])
