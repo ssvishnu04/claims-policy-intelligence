@@ -32,3 +32,7 @@ Document Normalization
         ↓
 (Next Steps)
 Chunking → Embeddings → FAISS → RAG → Streamlit UI
+
+## Streamlit Demo
+
+![Claims & Policy Intelligence Platform](image/PolicyClaimAssistant.jpg)
