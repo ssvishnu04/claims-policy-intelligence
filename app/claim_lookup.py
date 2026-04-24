@@ -74,8 +74,24 @@ def get_claim_profile(policy_id: str, claim_id: str) -> Dict[str, Any]:
     history = get_claim_history_record(policy_id, claim_id)
     estimates = get_repair_estimates(claim_id)
 
+    normalized_history = {
+        "claim_id": claim_id,
+        "policy_id": policy_id,
+        "loss_date": history.get("loss_date") or history.get("date") or fnol.get("loss_date") or "Not Available",
+        "loss_type": history.get("loss_type") or fnol.get("loss_type") or "Not Available",
+        "claim_status": history.get("claim_status") or history.get("status") or fnol.get("status") or "Not Available",
+        "paid_amount": history.get("paid_amount") or "Not Available",
+        "description": history.get("description") or fnol.get("description") or "Not Available",
+        "state": history.get("state") or fnol.get("state") or "Not Available",
+    }
+
+    filtered_estimates = [
+        e for e in estimates
+        if str(e.get("claim_id", "")).lower() == claim_id.lower()
+    ]
+
     estimate_total = 0
-    for row in estimates:
+    for row in filtered_estimates:
         try:
             estimate_total += float(row.get("estimated_cost", 0))
         except Exception:
@@ -85,8 +101,8 @@ def get_claim_profile(policy_id: str, claim_id: str) -> Dict[str, Any]:
         "policy_id": policy_id,
         "claim_id": claim_id,
         "fnol": fnol,
-        "claims_history": history,
-        "repair_estimates": estimates,
+        "claims_history": normalized_history,
+        "repair_estimates": filtered_estimates,
         "repair_estimate_total": estimate_total,
     }
 
@@ -98,11 +114,11 @@ STRUCTURED CLAIM PROFILE
 Policy ID: {profile.get("policy_id")}
 Claim ID: {profile.get("claim_id")}
 
-FNOL:
-{json.dumps(profile.get("fnol", {}), indent=2)}
-
 Claims History:
 {json.dumps(profile.get("claims_history", {}), indent=2)}
+
+FNOL:
+{json.dumps(profile.get("fnol", {}), indent=2)}
 
 Repair Estimates:
 {json.dumps(profile.get("repair_estimates", []), indent=2)}

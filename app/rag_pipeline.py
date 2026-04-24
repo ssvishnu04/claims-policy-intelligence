@@ -160,6 +160,58 @@ def filter_docs_by_policy_claim(
     return filtered_docs
 
 
+def isolate_policy_claim_docs(
+    docs: List[Document],
+    policy_id: str,
+    claim_id: str,
+) -> List[Document]:
+    """
+    Strictly isolate context so unrelated claims do not leak into final answer.
+
+    Keeps:
+    1. Claim-specific documents that mention the selected claim_id
+    2. Policy documents that mention the selected policy_id
+    3. Underwriting guidelines only when they are retrieved as relevant
+    """
+    policy_id_lower = policy_id.lower().strip()
+    claim_id_lower = claim_id.lower().strip()
+
+    final_docs = []
+
+    for doc in docs:
+        content = doc.page_content.lower()
+        metadata_text = " ".join(str(value).lower() for value in doc.metadata.values())
+        document_type = doc.metadata.get("document_type", "")
+
+        has_claim = claim_id_lower in content or claim_id_lower in metadata_text
+        has_policy = policy_id_lower in content or policy_id_lower in metadata_text
+
+        if has_claim:
+            final_docs.append(doc)
+
+        elif document_type == "policy" and has_policy:
+            final_docs.append(doc)
+
+        elif document_type == "uw_guideline":
+            final_docs.append(doc)
+
+    seen = set()
+    unique_docs = []
+
+    for doc in final_docs:
+        key = (
+            doc.metadata.get("chunk_id"),
+            doc.metadata.get("source"),
+            doc.page_content[:100],
+        )
+
+        if key not in seen:
+            seen.add(key)
+            unique_docs.append(doc)
+
+    return unique_docs
+
+
 def format_context(docs: List[Document]) -> str:
     context_blocks = []
 
@@ -213,7 +265,17 @@ Question: {question}
         claim_id=claim_id,
     )
 
-    rag_context = format_context(filtered_docs) if filtered_docs else "No matching retrieved document context found."
+    unique_docs = isolate_policy_claim_docs(
+        docs=filtered_docs,
+        policy_id=policy_id,
+        claim_id=claim_id,
+    )
+
+    rag_context = (
+        format_context(unique_docs)
+        if unique_docs
+        else "No matching retrieved document context found."
+    )
 
     context = f"""
 {claim_profile_context}
@@ -231,19 +293,22 @@ You are an AI Claims & Policy Assistant for a Property & Casualty insurance comp
 
 Rules:
 1. Answer only using the provided context.
-2. Only answer for the provided Policy ID and Claim ID.
-3. You MUST always use STRUCTURED CLAIM PROFILE for claim facts such as:
+2. You MUST strictly restrict all outputs to the provided Claim ID and Policy ID.
+3. DO NOT include any other claim IDs.
+4. DO NOT include any other policy IDs.
+5. If multiple claims appear in context, ONLY extract and return data for the given Claim ID.
+6. If unrelated claims are present, IGNORE them completely.
+7. You MUST always use STRUCTURED CLAIM PROFILE for claim facts such as:
    - loss date
    - claim status
    - paid amount
    - loss type
    - repair estimates
-4. Do NOT rely on retrieved documents for structured claim fields if the STRUCTURED CLAIM PROFILE contains those fields.
-5. Use RETRIEVED DOCUMENT CONTEXT for policy language, exclusions, adjuster notes, underwriting guidance, and supporting documents.
-6. Do not use unrelated policies, claims, or documents.
-7. Do not make up policy terms, exclusions, deductibles, dates, amounts, or claim facts.
-8. If the context does not support the answer, clearly say more information is needed.
-9. If the user asks for complete claim details, present claim details in a clean markdown table.
+8. Do NOT rely on retrieved documents for structured claim fields if the STRUCTURED CLAIM PROFILE contains those fields.
+9. Use RETRIEVED DOCUMENT CONTEXT for policy language, exclusions, adjuster notes, underwriting guidance, and supporting documents.
+10. Do not make up policy terms, exclusions, deductibles, dates, amounts, or claim facts.
+11. If the context does not support the answer, clearly say more information is needed.
+12. If the user asks for complete claim details, present claim details in a clean markdown table.
 
 Return your answer in this format:
 
@@ -288,7 +353,7 @@ Context:
 
     return {
         "answer": answer,
-        "sources": filtered_docs,
+        "sources": unique_docs,
         "claim_profile": claim_profile,
     }
 
