@@ -5,8 +5,7 @@
 ![RAGAS](https://img.shields.io/badge/RAGAS-Evaluation-purple)
 
 # Claims & Policy Intelligence Platform
-
-A portfolio project for Property & Casualty insurance demonstrating an end-to-end Retrieval-Augmented Generation (RAG) application using LangChain, FAISS, OpenAI, and Streamlit.
+An AI-powered Claims & Policy Intelligence Platform for Property & Casualty (P&C) insurance, enabling adjusters and underwriters to query coverage, exclusions, and claim details using Retrieval-Augmented Generation (RAG).
 
 ## Business Use Case
 This application helps claims adjusters and underwriters quickly retrieve coverage details, exclusions, deductible information, and prior claim context from insurance documents such as policies, FNOL reports, adjuster notes, and underwriting guidelines.
@@ -28,19 +27,55 @@ This application helps claims adjusters and underwriters quickly retrieve covera
 
 ## Architecture (High Level)
 
-User Query (Streamlit UI) ---> Claim Context Input (Policy ID, Claim ID) ---> RAG Pipeline (Structured Data Layer (FNOL, Claims, Estimates) ||  Vector Search (FAISS Index) || LangChain Orchestration)--->
-Groq LLM (Response Generation) ---> Internal Platform Answer + Sources(Explainable Output)
+## Architecture
+
+User Query (Streamlit UI)  
+↓  
+Claim Context Input (Policy ID, Claim ID)  
+↓  
+RAG Pipeline  
+- Structured Data Layer (FNOL, Claims, Estimates)  
+- FAISS Vector Search (Policies, Notes, Guidelines)  
+- LangChain Orchestration  
+↓  
+Groq LLM (Response Generation)  
+↓  
+AI Answer + Sources (Explainable Output)
 
 ## RAGAS Evaluation Results
 
-Metric	                          Score
-Context Precision	         1.0000
-Context Recall	                 0.9000
-Faithfulness	                 0.8768
-Answer Relevancy	         0.9600
+| Metric | Score |
+|---|---:|
+| Context Precision | **1.0000** |
+| Context Recall | **0.9000** |
+| Faithfulness | **0.8768** |
+| Answer Relevancy | **0.9600** |
+
+## Key Design Decisions
+
+- Implemented strict claim-level filtering to prevent cross-claim data leakage
+- Prioritized structured data over retrieved documents for claim facts
+- Enforced grounding rules to reduce hallucination
+- Increased retrieval depth (k=20) to improve recall
+
+## Sample Queries
+
+- Is this claim covered?
+- What exclusions apply?
+- What deductible should be reviewed?
+- What supporting documents are relevant?
+- What should the adjuster verify next?
 
 ## Streamlit Demo
 
 https://claims-policy-assistant.streamlit.app/
 
-![Claims & Policy Intelligence Platform](image/PolicyClaimAssistant.jpg)
+<p align="center">
+  <img src="image/PolicyClaimAssistant.jpg" width="900"/>
+</p>
+
+## Business Impact
+
+- Reduced claim review time through instant policy lookup
+- Improved decision accuracy using explainable responses
+- Eliminated manual document search for adjusters
