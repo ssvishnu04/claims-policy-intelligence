@@ -3,30 +3,30 @@
     "policy_id": "POL-1001",
     "claim_id": "CLM-2001",
     "question": "Is this sudden pipe burst water damage covered?",
-    "ground_truth": "Sudden and accidental discharge from a plumbing system may be covered under the homeowners policy, subject to deductible and exclusions."
-  },
-  {
-    "policy_id": "POL-1001",
-    "claim_id": "CLM-2002",
-    "question": "Is flood damage covered under this homeowners policy?",
-    "ground_truth": "Flood and surface water are excluded under the homeowners policy unless separate flood coverage exists."
-  },
-  {
-    "policy_id": "POL-2001",
-    "claim_id": "CLM-3001",
-    "question": "Is rear-end collision damage covered?",
-    "ground_truth": "Collision damage may be covered under the personal auto policy, subject to the collision deductible."
+    "ground_truth": "The claim involves sudden pipe burst water damage. The homeowners policy covers sudden and accidental water discharge from a plumbing system, subject to the $1,000 deductible and exclusions such as flood, surface water, storm surge, underground water, and repeated seepage over 14 days."
   },
   {
     "policy_id": "POL-2001",
     "claim_id": "CLM-3003",
-    "question": "Is mechanical breakdown covered?",
-    "ground_truth": "Mechanical breakdown is excluded under the personal auto policy."
+    "question": "Is this mechanical breakdown claim covered?",
+    "ground_truth": "The personal auto policy excludes mechanical breakdown, wear and tear, intentional damage, racing, and illegal vehicle use. Therefore, the mechanical breakdown claim is not covered based on the available policy language."
   },
   {
     "policy_id": "POL-3001",
     "claim_id": "CLM-4001",
-    "question": "Is commercial hail damage covered?",
-    "ground_truth": "Commercial wind and hail damage may be covered subject to deductible and policy conditions."
+    "question": "Is commercial hail damage covered and what should the adjuster verify?",
+    "ground_truth": "Commercial hail damage may be covered under the commercial property policy, subject to the $5,000 deductible, roof condition, and policy terms. The adjuster should verify roof condition, cause of loss, supporting inspection documentation, deductible, and exclusions."
+  },
+  {
+    "policy_id": "POL-4001",
+    "claim_id": "CLM-5001",
+    "question": "Is theft of business equipment covered?",
+    "ground_truth": "The business owners policy covers direct physical loss to business personal property caused by a covered loss. Theft may be covered if evidence supports forced entry. The police report shows forced entry and missing business equipment."
+  },
+  {
+    "policy_id": "POL-4001",
+    "claim_id": "CLM-5003",
+    "question": "Is this wear and tear claim covered?",
+    "ground_truth": "The business owners policy excludes normal wear and tear. The claim description states damage resulted from long-term deterioration of business property flooring, so the claim is not covered based on the available policy language."
   }
 ]
