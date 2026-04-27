@@ -1,3 +1,9 @@
+![Python](https://img.shields.io/badge/Python-3.10-blue)
+![LangChain](https://img.shields.io/badge/LangChain-RAG-green)
+![FAISS](https://img.shields.io/badge/FAISS-VectorSearch-orange)
+![Streamlit](https://img.shields.io/badge/Streamlit-App-red)
+![RAGAS](https://img.shields.io/badge/RAGAS-Evaluation-purple)
+
 # Claims & Policy Intelligence Platform
 
 A portfolio project for Property & Casualty insurance demonstrating an end-to-end Retrieval-Augmented Generation (RAG) application using LangChain, FAISS, OpenAI, and Streamlit.
