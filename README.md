@@ -35,4 +35,6 @@ Answer Relevancy	         0.9600
 
 ## Streamlit Demo
 
+https://claims-policy-assistant.streamlit.app/
+
 ![Claims & Policy Intelligence Platform](image/PolicyClaimAssistant.jpg)
