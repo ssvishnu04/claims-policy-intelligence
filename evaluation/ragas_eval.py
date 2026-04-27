@@ -1,11 +1,12 @@
+import os
 import json
 from pathlib import Path
+from typing import List, Dict, Any
 
 from datasets import Dataset
 from ragas import evaluate
 from ragas.metrics import (
     Faithfulness,
-    ResponseRelevancy,
     ContextPrecision,
     ContextRecall,
 )
@@ -20,26 +21,13 @@ from app.config import GROQ_API_KEY, GROQ_MODEL, EMBEDDING_MODEL
 from app.rag_pipeline import ask_claims_assistant
 
 
+# Best-effort Groq compatibility
+os.environ["RAGAS_GENERATION_COUNT"] = "1"
+
 TEST_FILE = Path("evaluation/test_questions.json")
 
 
-def filter_sources_by_policy_claim(sources, policy_id: str, claim_id: str):
-    filtered = []
-
-    for doc in sources:
-        content = doc.page_content.lower()
-        metadata_text = " ".join(str(v).lower() for v in doc.metadata.values())
-
-        policy_match = policy_id.lower() in content or policy_id.lower() in metadata_text
-        claim_match = claim_id.lower() in content or claim_id.lower() in metadata_text
-
-        if policy_match or claim_match:
-            filtered.append(doc)
-
-    return filtered if filtered else sources
-
-
-def build_ragas_dataset():
+def build_ragas_rows() -> List[Dict[str, Any]]:
     with TEST_FILE.open("r", encoding="utf-8") as f:
         test_cases = json.load(f)
 
@@ -54,61 +42,152 @@ def build_ragas_dataset():
             policy_id=policy_id,
             claim_id=claim_id,
             question=question,
-            k=15,
+            k=20,
         )
 
-        filtered_sources = filter_sources_by_policy_claim(
-            result["sources"],
-            policy_id=policy_id,
-            claim_id=claim_id,
-        )
+        contexts = [doc.page_content for doc in result["sources"]]
+
+        # Add structured claim profile to evaluation context
+        if result.get("claim_profile"):
+            contexts.insert(0, str(result["claim_profile"]))
 
         rows.append(
             {
                 "question": f"Policy ID: {policy_id}. Claim ID: {claim_id}. {question}",
                 "answer": result["answer"],
-                "contexts": [doc.page_content for doc in filtered_sources],
+                "contexts": contexts,
                 "ground_truth": case["ground_truth"],
             }
         )
 
-    return Dataset.from_list(rows)
+    return rows
 
 
-def main():
-    dataset = build_ragas_dataset()
-
+def get_ragas_llm():
     groq_llm = ChatGroq(
         groq_api_key=GROQ_API_KEY,
         model_name=GROQ_MODEL,
         temperature=0,
-        max_tokens=800,
+        max_tokens=2000,
+        timeout=120,
+        max_retries=1,
     )
 
-    ragas_llm = LangchainLLMWrapper(groq_llm)
+    return LangchainLLMWrapper(groq_llm)
 
+
+def get_ragas_embeddings():
     embedding_model = HuggingFaceEmbeddings(
         model_name=EMBEDDING_MODEL
     )
 
-    ragas_embeddings = LangchainEmbeddingsWrapper(embedding_model)
+    return LangchainEmbeddingsWrapper(embedding_model)
 
-    result = evaluate(
-        dataset=dataset,
-        metrics=[
-            ResponseRelevancy(),
-            ContextPrecision(),
-            ContextRecall(),
-            Faithfulness(),
-        ],
-        llm=ragas_llm,
-        embeddings=ragas_embeddings,
-        raise_exceptions=False,
-    )
+
+def run_metric(dataset: Dataset, metric, ragas_llm, ragas_embeddings):
+    try:
+        result = evaluate(
+            dataset=dataset,
+            metrics=[metric],
+            llm=ragas_llm,
+            embeddings=ragas_embeddings,
+            raise_exceptions=False,
+        )
+        return result
+
+    except Exception as e:
+        return {metric.name: f"FAILED: {str(e)}"}
+
+
+def simple_answer_relevancy(rows: List[Dict[str, Any]]) -> float:
+    """
+    Lightweight fallback for Answer Relevancy.
+
+    Why this exists:
+    RAGAS ResponseRelevancy can fail with Groq because some RAGAS versions
+    request multiple generations, while Groq supports only n=1.
+
+    This is not a replacement for full semantic evaluation, but it gives a
+    practical approximation for portfolio/demo reporting.
+    """
+    scores = []
+
+    stopwords = {
+        "the", "is", "a", "an", "and", "or", "to", "of", "in", "for",
+        "this", "that", "with", "what", "should", "does", "do", "me",
+        "give", "policy", "claim", "id"
+    }
+
+    for row in rows:
+        question_words = [
+            word.strip(".,?:;!").lower()
+            for word in row["question"].split()
+            if word.strip(".,?:;!").lower() not in stopwords
+        ]
+
+        answer = row["answer"].lower()
+
+        if not question_words:
+            scores.append(0)
+            continue
+
+        matched_words = [
+            word for word in question_words
+            if word in answer
+        ]
+
+        score = len(matched_words) / len(question_words)
+        scores.append(score)
+
+    return sum(scores) / len(scores) if scores else 0.0
+
+
+def main():
+    rows = build_ragas_rows()
+    dataset = Dataset.from_list(rows)
+
+    ragas_llm = get_ragas_llm()
+    ragas_embeddings = get_ragas_embeddings()
+
+    metrics = [
+        ContextPrecision(),
+        ContextRecall(),
+        Faithfulness(),
+    ]
 
     print("\nRAGAS Evaluation Results")
     print("=" * 80)
-    print(result)
+
+    final_results = {}
+
+    for metric in metrics:
+        print(f"\nRunning metric: {metric.name}")
+
+        metric_result = run_metric(
+            dataset=dataset,
+            metric=metric,
+            ragas_llm=ragas_llm,
+            ragas_embeddings=ragas_embeddings,
+        )
+
+        print(metric_result)
+
+        try:
+            final_results.update(dict(metric_result))
+        except Exception:
+            final_results[metric.name] = str(metric_result)
+
+    manual_relevancy_score = simple_answer_relevancy(rows)
+
+    print("\nManual Answer Relevancy Approximation")
+    print("=" * 80)
+    print(round(manual_relevancy_score, 4))
+
+    final_results["manual_answer_relevancy"] = round(manual_relevancy_score, 4)
+
+    print("\nFinal Combined Results")
+    print("=" * 80)
+    print(final_results)
 
 
 if __name__ == "__main__":
