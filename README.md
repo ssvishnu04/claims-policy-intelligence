@@ -20,19 +20,19 @@ This application helps claims adjusters and underwriters quickly retrieve covera
 - **RAG (Retrieval-Augmented Generation):** Combines document retrieval with LLM responses.
 - **Vector Search:** Enables semantic search using embeddings.
 
+## Architecture (High Level)
+
+User Query (Streamlit UI) ---> Claim Context Input (Policy ID, Claim ID) ---> RAG Pipeline (Structured Data Layer (FNOL, Claims, Estimates) ||  Vector Search (FAISS Index) || LangChain Orchestration)--->
+Groq LLM (Response Generation) ---> Internal Platform Answer + Sources(Explainable Output)
+
+## RAGAS Evaluation Results
+
+Metric	                          Score
+Context Precision	         1.0000
+Context Recall	                 0.9000
+Faithfulness	                 0.8768
+Answer Relevancy	         0.9600
+
 ## Streamlit Demo
 
 ![Claims & Policy Intelligence Platform](image/PolicyClaimAssistant.jpg)
-
-## Architecture (High Level)
-
-```text
-Data Sources
-(PDFs, FNOL JSON, Notes, Guidelines)
-        ↓
-Ingestion Pipeline
-        ↓
-Document Normalization
-        ↓
-(Next Steps)
-Chunking → Embeddings → FAISS → RAG → Streamlit UI
