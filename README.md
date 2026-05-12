@@ -1,3 +1,4 @@
+# P&C Claims Intelligence RAG Platform
 ![Python](https://img.shields.io/badge/Python-3.10-blue)
 ![LangChain](https://img.shields.io/badge/LangChain-RAG-green)
 ![FAISS](https://img.shields.io/badge/FAISS-VectorSearch-orange)
@@ -6,9 +7,11 @@
 ![Azure](https://img.shields.io/badge/Azure-Cloud-blue)
 ![Databricks](https://img.shields.io/badge/Databricks-Lakehouse-red)
 
-# P&C Claims Intelligence RAG Platform
+Enterprise style AI powered Claims & Policy Intelligence Platform for Property & Casualty (P&C) insurance enabling adjusters and underwriters to retrieve coverage details, exclusions, deductible information, and claim insights using Retrieval Augmented Generation (RAG).
 
-Enterprise-style AI-powered Claims & Policy Intelligence Platform for Property & Casualty (P&C) insurance enabling adjusters and underwriters to retrieve coverage details, exclusions, deductible information, and claim insights using Retrieval-Augmented Generation (RAG).
+# Project Link
+
+[![Streamlit App](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://claims-policy-assistant.streamlit.app/)
 
 ---
 
@@ -16,15 +19,15 @@ Enterprise-style AI-powered Claims & Policy Intelligence Platform for Property &
 
 Insurance claims teams often spend significant time manually reviewing policies, FNOL reports, adjuster notes, and underwriting documents to validate coverage and determine next steps during claims adjudication.
 
-This platform demonstrates how Generative AI and Retrieval-Augmented Generation (RAG) can be applied within a regulated P&C insurance environment to improve claims investigation efficiency, accelerate policy lookup, and generate explainable AI-assisted responses grounded in enterprise insurance documents.
+This platform demonstrates how Generative AI and Retrieval Augmented Generation (RAG) can be applied within a regulated P&C insurance environment to improve claims investigation efficiency, accelerate policy lookup, and generate explainable AI assisted responses grounded in enterprise insurance documents.
 
 The solution combines:
 - Structured claims data
 - Semantic vector search
 - LLM-powered reasoning
-- Governance-aware retrieval workflows
+- Governance aware retrieval workflows
 - RAGAS evaluation metrics
-- Enterprise-style API orchestration
+- Enterprise style API orchestration
 
 ---
 
@@ -49,15 +52,15 @@ The system enables faster claims review and reduces manual document search effor
 
 # Enterprise Features
 
-- Retrieval-Augmented Generation (RAG)
+- Retrieval Augmented Generation (RAG)
 - Semantic Vector Search using FAISS
-- Governance-aware claim filtering
+- Governance aware claim filtering
 - Explainable AI responses
 - Structured + unstructured data integration
 - LangChain orchestration workflows
 - REST API integration
 - RAGAS evaluation framework
-- Streamlit-based UI
+- Streamlit based UI
 - Cloud-ready deployment architecture
 
 ---
@@ -83,7 +86,7 @@ The system enables faster claims review and reduces manual document search effor
 ## FNOL (First Notice of Loss)
 The initial report of a claim submitted by the insured after a loss event.
 
-## RAG (Retrieval-Augmented Generation)
+## RAG (Retrieval Augmented Generation)
 Combines enterprise document retrieval with Large Language Model (LLM) response generation to produce grounded and explainable answers.
 
 ## Vector Search
@@ -171,9 +174,7 @@ project/
 
 ---
 
-# Streamlit Demo
-
-https://claims-policy-assistant.streamlit.app/
+# Streamlit Dashboard
 
 <p align="center">
   <img src="image/PolicyClaimAssistant.jpg" width="900"/>
