@@ -4,7 +4,7 @@
 ![Streamlit](https://img.shields.io/badge/Streamlit-App-red)
 ![RAGAS](https://img.shields.io/badge/RAGAS-Evaluation-purple)
 
-# Claims & Policy Intelligence Platform
+# P&C Claims Intelligence RAG Platform
 An AI-powered Claims & Policy Intelligence Platform for Property & Casualty (P&C) insurance, enabling adjusters and underwriters to query coverage, exclusions, and claim details using Retrieval-Augmented Generation (RAG).
 
 ## Business Use Case
