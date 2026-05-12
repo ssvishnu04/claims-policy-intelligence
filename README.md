@@ -203,4 +203,18 @@ project/
 - Hybrid vector database integration
 
 ---
+# Disclaimer
+
+This project is intended for:
+- Educational purposes
+- Portfolio demonstrations
+
+No real customer, claims, policyholder, underwriting, or treaty data is used.
+
+---
+
+# Author
+Vishnu Yadavalli
+
+---
 ⭐ Enterprise-style AI solution demonstrating practical RAG implementation patterns for regulated P&C insurance workflows.
